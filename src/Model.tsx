@@ -1,6 +1,6 @@
 import * as THREE from "three";
-import { useRef } from "react";
-import { useGLTF } from "@react-three/drei";
+import { useRef, useEffect } from "react";
+import { useGLTF, useAnimations } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 
 type GLTFResult = GLTF & {
@@ -32,7 +32,15 @@ type GLTFResult = GLTF & {
 
 const Model = ({ ...props }: JSX.IntrinsicElements["group"]) => {
   const group = useRef<THREE.Group>(null);
-  const { nodes, materials } = useGLTF("/model.glb") as GLTFResult;
+  const { nodes, materials, animations } = useGLTF(
+    "/animated-model.glb"
+  ) as GLTFResult;
+
+  const { actions } = useAnimations(animations, group);
+
+  useEffect(() => {
+    actions["Armature.001|mixamo.com|Layer0"]?.play();
+  });
 
   return (
     <group ref={group} {...props} dispose={null}>
