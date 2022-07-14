@@ -42,8 +42,19 @@ const Model = ({ ...props }: JSX.IntrinsicElements["group"]) => {
     actions["Armature.001|mixamo.com|Layer0"]?.play();
   });
 
+  const playPauseAnimation = () => {
+    if (actions["Armature.001|mixamo.com|Layer0"]) {
+      if (actions["Armature.001|mixamo.com|Layer0"].isRunning()) {
+        actions["Armature.001|mixamo.com|Layer0"].halt(3);
+      } else {
+        actions["Armature.001|mixamo.com|Layer0"].paused = false;
+        actions["Armature.001|mixamo.com|Layer0"].play();
+      }
+    }
+  };
+
   return (
-    <group ref={group} {...props} dispose={null}>
+    <group ref={group} {...props} dispose={null} onClick={playPauseAnimation}>
       <primitive object={nodes.Hips} />
       <skinnedMesh
         geometry={nodes.Wolf3D_Body.geometry}
